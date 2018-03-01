@@ -70,30 +70,20 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Dwr-N5-0kq">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dwr-N5-0kq">
                                 <rect key="frame" x="16" y="201" width="343" height="260"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QLY-o1-Xx1">
-                                <rect key="frame" x="16" y="469" width="343" height="30"/>
-                                <state key="normal" title="Add To Favorites"/>
-                                <connections>
-                                    <action selector="AddToFavorites:" destination="wXm-3D-Lhn" eventType="touchUpInside" id="T5t-TZ-KbG"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="KFm-Gl-WbN" firstAttribute="bottom" secondItem="Dwr-N5-0kq" secondAttribute="bottom" constant="206" id="A8e-54-kNn"/>
-                            <constraint firstItem="QLY-o1-Xx1" firstAttribute="leading" secondItem="Dwr-N5-0kq" secondAttribute="leading" id="Hmc-DI-rer"/>
                             <constraint firstItem="bQN-wI-Rir" firstAttribute="trailing" secondItem="9cV-hl-HOw" secondAttribute="trailingMargin" id="ImW-Hs-oV4"/>
                             <constraint firstItem="bQN-wI-Rir" firstAttribute="leading" secondItem="9cV-hl-HOw" secondAttribute="leadingMargin" id="LuQ-v6-57Y"/>
-                            <constraint firstItem="QLY-o1-Xx1" firstAttribute="top" secondItem="Dwr-N5-0kq" secondAttribute="bottom" constant="8" symbolic="YES" id="cdQ-2d-B4d"/>
                             <constraint firstItem="bQN-wI-Rir" firstAttribute="trailing" secondItem="Dwr-N5-0kq" secondAttribute="trailing" id="cf4-1o-sPl"/>
-                            <constraint firstItem="QLY-o1-Xx1" firstAttribute="trailing" secondItem="Dwr-N5-0kq" secondAttribute="trailing" id="hwS-F6-gAy"/>
                             <constraint firstItem="bQN-wI-Rir" firstAttribute="top" secondItem="KFm-Gl-WbN" secondAttribute="top" constant="26" id="ryA-4m-W5I"/>
                             <constraint firstItem="Dwr-N5-0kq" firstAttribute="top" secondItem="bQN-wI-Rir" secondAttribute="bottom" constant="8" symbolic="YES" id="s7I-08-VmF"/>
                             <constraint firstItem="bQN-wI-Rir" firstAttribute="leading" secondItem="Dwr-N5-0kq" secondAttribute="leading" id="tG9-5d-XsI"/>
@@ -101,7 +91,6 @@
                         <viewLayoutGuide key="safeArea" id="KFm-Gl-WbN"/>
                     </view>
                     <connections>
-                        <outlet property="addToFavoritesButton" destination="QLY-o1-Xx1" id="y5D-hc-ieD"/>
                         <outlet property="overviewTextView" destination="Dwr-N5-0kq" id="7UX-6K-gJA"/>
                         <outlet property="titleLabel" destination="bQN-wI-Rir" id="K3N-Ug-CTo"/>
                     </connections>
