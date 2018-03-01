@@ -17,26 +17,27 @@ class Movie: NSObject {
     var original_title:String?
     var isAdult:Bool?
     var vote_count:Int?
-    var vote_average:Int?
+    var vote_average:Double?
     var popularity:Double?
     var poster_path:String?
     var original_language:String?
     var isVideo:Bool?
     
-    init?(json: [String:Any]) {
+    init?(json: Dictionary<String,Any>) {
         
         guard let id = json["id"] as? Int,
             let title = json["title"] as? String,
             let overview = json["overview"] as? String,
             let release_date = json["release_date"] as? String,
             let original_title = json["original_title"] as? String,
-            let isAdult = json["isAdult"] as? Bool,
+            let isAdult = json["adult"] as? Bool,
             let vote_count = json["vote_count"] as? Int,
-            let vote_average = json["vote_average"] as? Int,
+            let vote_average = json["vote_average"] as? Double,
             let popularity = json["popularity"] as? Double,
             let poster_path = json["poster_path"] as? String,
             let original_language = json["original_language"] as? String,
-            let isVideo = json["isVideo"] as? Bool else {
+            let isVideo = json["video"] as? Bool else {
+                
                 return nil
         }
         
