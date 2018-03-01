@@ -22,6 +22,7 @@ class Movie: Codable {
     var poster_path:String?
     var original_language:String?
     var video:Bool?
+    var isFavorite:Bool?
     
     
 }

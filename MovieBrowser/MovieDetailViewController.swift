@@ -33,8 +33,6 @@ class MovieDetailViewController: UIViewController {
             overviewTextView.text = selectedMovie?.overview
             
         }
-        
-        
     }
     
     @objc func addToFavorites() {

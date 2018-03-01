@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        if let favoritesData = UserDefaults.standard.data(forKey: "favoriteMovies")
+        if let favoritesData = UserDefaults.standard.data(forKey: "favMovies")
         {
             favoriteMovies = try! JSONDecoder().decode([Movie].self, from: favoritesData)
         }
@@ -81,10 +81,9 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource,MovieDetail
     
     func selectedFavoriteMovie(favorite: Movie) {
         
-        
         favoriteMovies.append(favorite)
        let favoritesData = try! JSONEncoder().encode(favoriteMovies)
-        UserDefaults.standard.set(favoritesData, forKey: "favoriteMovies")
+        UserDefaults.standard.set(favoritesData, forKey: "favMovies")
         
     }
     
