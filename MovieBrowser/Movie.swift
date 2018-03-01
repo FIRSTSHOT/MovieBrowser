@@ -14,6 +14,7 @@ class Movie: NSObject {
     var title:String?
     var overview:String?
     var release_date:String?
+    var original_title:String?
     var isAdult:Bool?
     var vote_count:Int?
     var vote_average:Int?
