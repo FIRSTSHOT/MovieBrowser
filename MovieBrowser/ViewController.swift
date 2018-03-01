@@ -13,6 +13,7 @@ class ViewController: UIViewController {
 
     var movies : [Movie]?
     var selectedMovie: Movie?
+    var favoriteMovies : [Movie]?
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -21,14 +22,19 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         tableView.delegate = self
         tableView.dataSource = self
+        
+        favoriteMovies = [Movie]()
         
         getMovies { (data) in
             
             self.movies = data
             
             DispatchQueue.main.async {
+                self.tableView.reloadInputViews()
                 self.tableView.reloadData()
             }
             
@@ -38,6 +44,12 @@ class ViewController: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+       super.viewDidAppear(true)
+        
+        self.tableView.reloadData()
+    }
+    
     func getMovies(completion: @escaping ([Movie]) -> Void) {
         
         NetworkService.getAllMovies(apiUrl: api) { (data) in
@@ -45,49 +57,98 @@ class ViewController: UIViewController {
             guard let movies = data else {
                 return
             }
-            
             completion(movies)
-            
         }
-    
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MovieDetailViewController {
+            destination.delegate = self
             destination.selectedMovie = selectedMovie
+            
+            if (favoriteMovies?.contains(selectedMovie!))! {
+                destination.isFavorite = true
+            }
         }
     }
 
-
-
 }
 
-extension ViewController : UITableViewDelegate,UITableViewDataSource {
+extension ViewController : UITableViewDelegate,UITableViewDataSource,MovieDetailViewControllerDelegate {
+    
+    
+    func selectedFavoriteMovie(favorite: Movie) {
+        
+        favoriteMovies?.append(favorite)
+        
+    }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        if let title = movies![indexPath.row].title {
-            
-            cell.textLabel?.text = title
-        }
         
+        switch indexPath.section {
+        case 0:
+            if let title = movies![indexPath.row].title {
+                
+                cell.textLabel?.text = title
+            }
+            break
+        case 1:
+            
+            if let title = favoriteMovies![indexPath.row].title {
+                
+                cell.textLabel?.text = title
+            }
+            break
+            
+        default: break
+            
+        }
         
         return cell
         
     }
     
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.movies == nil {
+        
+        
+        switch section {
+        case 0:
+            if self.movies == nil {
+                return 0
+            }
+            return (self.movies?.count)!
+        case 1:
+            if self.favoriteMovies == nil {
+                return 0
+            }
+            return (self.favoriteMovies?.count)!
+        default:
             return 0
         }
-        return (self.movies?.count)!
+        
+        
         
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0 :
+            return "Movies"
+        case 1 :
+            return "Favorites"
+        default:
+            return ""
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
