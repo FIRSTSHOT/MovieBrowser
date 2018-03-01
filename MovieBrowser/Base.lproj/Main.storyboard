@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CVL-sm-gKm">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,13 +43,79 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="iwf-vA-QRp"/>
                     <connections>
                         <outlet property="tableView" destination="SkJ-hP-5Xy" id="H3A-BZ-ikw"/>
+                        <segue destination="wXm-3D-Lhn" kind="show" identifier="showMovieDetailSegue" id="YFR-Mb-GaI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-719.20000000000005" y="135.38230884557723"/>
+            <point key="canvasLocation" x="-798" y="133"/>
+        </scene>
+        <!--Movie Detail View Controller-->
+        <scene sceneID="qMe-if-pGM">
+            <objects>
+                <viewController id="wXm-3D-Lhn" customClass="MovieDetailViewController" customModule="MovieBrowser" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9cV-hl-HOw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQN-wI-Rir">
+                                <rect key="frame" x="16" y="90" width="343" height="103"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="103" id="h7U-iN-n9G"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Dwr-N5-0kq">
+                                <rect key="frame" x="16" y="201" width="343" height="260"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="KFm-Gl-WbN" firstAttribute="bottom" secondItem="Dwr-N5-0kq" secondAttribute="bottom" constant="206" id="A8e-54-kNn"/>
+                            <constraint firstItem="bQN-wI-Rir" firstAttribute="trailing" secondItem="9cV-hl-HOw" secondAttribute="trailingMargin" id="ImW-Hs-oV4"/>
+                            <constraint firstItem="bQN-wI-Rir" firstAttribute="leading" secondItem="9cV-hl-HOw" secondAttribute="leadingMargin" id="LuQ-v6-57Y"/>
+                            <constraint firstItem="bQN-wI-Rir" firstAttribute="trailing" secondItem="Dwr-N5-0kq" secondAttribute="trailing" id="cf4-1o-sPl"/>
+                            <constraint firstItem="bQN-wI-Rir" firstAttribute="top" secondItem="KFm-Gl-WbN" secondAttribute="top" constant="26" id="ryA-4m-W5I"/>
+                            <constraint firstItem="Dwr-N5-0kq" firstAttribute="top" secondItem="bQN-wI-Rir" secondAttribute="bottom" constant="8" symbolic="YES" id="s7I-08-VmF"/>
+                            <constraint firstItem="bQN-wI-Rir" firstAttribute="leading" secondItem="Dwr-N5-0kq" secondAttribute="leading" id="tG9-5d-XsI"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="KFm-Gl-WbN"/>
+                    </view>
+                    <connections>
+                        <outlet property="overviewTextView" destination="Dwr-N5-0kq" id="7UX-6K-gJA"/>
+                        <outlet property="titleLabel" destination="bQN-wI-Rir" id="K3N-Ug-CTo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YqA-tT-ZWk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-36" y="133"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="vRl-dO-dbg">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CVL-sm-gKm" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="niP-m6-xAL">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="yIa-i7-maw"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ioJ-CN-hg1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1542" y="133"/>
         </scene>
     </scenes>
 </document>
