@@ -13,7 +13,7 @@ class NetworkService: NSObject {
     static func getAllMovies(apiUrl:String,completion : @escaping ([Movie]?) -> Void)
     {
         
-        var movieList:[Movie]?
+        var movieList = [Movie]()
         
         guard let url = URL(string: apiUrl) else {
              print("Error: cannot create URL")
@@ -42,21 +42,38 @@ class NetworkService: NSObject {
                 
                 if let dataJson = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String:Any]
                 {
-                    guard let results = dataJson["results"] as? [String] else {
+
+                    guard let results = dataJson["results"] as? [Any] else {
+                        
                         
                         completion(nil)
                         return
                     }
-                    
+
                     for i in 0..<results.count {
                         
-                        if let  movie = Movie(json: (results[i] as? [String:Any])!) {
-                            print(movie)
-                              movieList?.append(movie)
+                        guard let movieJson = results[i] as? Dictionary<String,Any> else {
+                            completion(nil)
+                            return
+                        }
+                        
+                        if let  movie = Movie(json: movieJson) {
+                              movieList.append(movie)
+                        }else{
+                            print("error appending")
                         }
 
                         
                     }
+                    
+                    if(!movieList.isEmpty) {
+                        completion(movieList)
+                        return
+                    }
+                    
+                    completion(nil)
+                    
+                
                     
                 }
                 
