@@ -4,7 +4,7 @@
 //
 //  Created by Abdellah LHASSANI on 3/1/18.
 //  Copyright © 2018 Abdellah LHASSANI. All rights reserved.
-
+//
 
 import UIKit
 
@@ -15,10 +15,9 @@ protocol MovieDetailViewControllerDelegate {
 class MovieDetailViewController: UIViewController {
     
 
-    @IBOutlet weak var addToFavoritesButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overviewTextView: UITextView!
-    var isFavorite:Bool?
+    
     
     var selectedMovie:Movie?
     var delegate : MovieDetailViewControllerDelegate?
@@ -26,38 +25,27 @@ class MovieDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addToFavorites))
+        
         if(selectedMovie != nil)
         {
             titleLabel.text = selectedMovie?.title
             overviewTextView.text = selectedMovie?.overview
             
-            if(isFavorite != nil)
-            {
-                addToFavoritesButton.setTitle("Movie Added", for: .normal)
-                addToFavoritesButton.isEnabled = false
-                
-            }
         }
         
         
     }
-
-    @IBAction func AddToFavorites(_ sender: Any) {
+    
+    @objc func addToFavorites() {
         
         if let movie = selectedMovie {
-         
+            
             delegate?.selectedFavoriteMovie(favorite: movie)
             
-            addToFavoritesButton.setTitle("Movie Added", for: .normal) 
-            addToFavoritesButton.isEnabled = false
-            
-            
         }
-        
-        
-        
-        
     }
+
     
 }
 

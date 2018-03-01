@@ -15,6 +15,7 @@
 		B0E202F12048088300600E2E /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E202F02048088300600E2E /* Movie.swift */; };
 		B0E202F320480CCD00600E2E /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E202F220480CCD00600E2E /* NetworkService.swift */; };
 		B0E202F92048453F00600E2E /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E202F82048453F00600E2E /* MovieDetailViewController.swift */; };
+		B0E202FB20486EF500600E2E /* JSONRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E202FA20486EF500600E2E /* JSONRoot.swift */; };
 		EF011AACE5A7DCD8722FCD62 /* Pods_MovieBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33C3FE5D7E236F33338B7B0D /* Pods_MovieBrowser.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		B0E202F02048088300600E2E /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		B0E202F220480CCD00600E2E /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		B0E202F82048453F00600E2E /* MovieDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailViewController.swift; sourceTree = "<group>"; };
+		B0E202FA20486EF500600E2E /* JSONRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONRoot.swift; sourceTree = "<group>"; };
 		C35F51279BB342E8E4601AF8 /* Pods-MovieBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieBrowser/Pods-MovieBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		F2D1D26E8A816BD7098FE904 /* Pods-MovieBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieBrowser/Pods-MovieBrowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				B0E202F02048088300600E2E /* Movie.swift */,
+				B0E202FA20486EF500600E2E /* JSONRoot.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				B0E202DF2048045B00600E2E /* AppDelegate.swift in Sources */,
 				B0E202F320480CCD00600E2E /* NetworkService.swift in Sources */,
 				B0E202F12048088300600E2E /* Movie.swift in Sources */,
+				B0E202FB20486EF500600E2E /* JSONRoot.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
