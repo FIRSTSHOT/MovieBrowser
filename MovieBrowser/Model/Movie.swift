@@ -25,22 +25,18 @@ class Movie: NSObject {
     
     init?(json: [String:Any]) {
         
-        guard let result  = json["results"] as? [String:Any] else {
-            return nil
-        }
-        
-        guard let id = result["id"] as? Int,
-            let title = result["title"] as? String,
-            let overview = result["overview"] as? String,
-            let release_date = result["release_date"] as? String,
-            let original_title = result["original_title"] as? String,
-            let isAdult = result["isAdult"] as? Bool,
-            let vote_count = result["vote_count"] as? Int,
-            let vote_average = result["vote_average"] as? Int,
-            let popularity = result["popularity"] as? Double,
-            let poster_path = result["poster_path"] as? String,
-            let original_language = result["original_language"] as? String,
-            let isVideo = result["isVideo"] as? Bool else {
+        guard let id = json["id"] as? Int,
+            let title = json["title"] as? String,
+            let overview = json["overview"] as? String,
+            let release_date = json["release_date"] as? String,
+            let original_title = json["original_title"] as? String,
+            let isAdult = json["isAdult"] as? Bool,
+            let vote_count = json["vote_count"] as? Int,
+            let vote_average = json["vote_average"] as? Int,
+            let popularity = json["popularity"] as? Double,
+            let poster_path = json["poster_path"] as? String,
+            let original_language = json["original_language"] as? String,
+            let isVideo = json["isVideo"] as? Bool else {
                 return nil
         }
         
