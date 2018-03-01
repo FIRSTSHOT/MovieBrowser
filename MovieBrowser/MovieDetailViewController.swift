@@ -4,7 +4,7 @@
 //
 //  Created by Abdellah LHASSANI on 3/1/18.
 //  Copyright © 2018 Abdellah LHASSANI. All rights reserved.
-//
+
 
 import UIKit
 
@@ -25,9 +25,6 @@ class MovieDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
         
         if(selectedMovie != nil)
         {
