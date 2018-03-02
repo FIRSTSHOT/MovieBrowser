@@ -12,8 +12,7 @@ class NetworkService: NSObject {
     
     static func getAllMovies(apiUrl:String,completion : @escaping ([Movie]?) -> Void)
     {
-     
-        
+
         guard let url = URL(string: apiUrl) else {
              print("Error: cannot create URL")
             completion(nil)

@@ -81,7 +81,19 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource,MovieDetail
     
     func selectedFavoriteMovie(favorite: Movie) {
         
-        favoriteMovies.append(favorite)
+        if(!favoriteMovies.contains(where: { (m) -> Bool in
+         
+            if(m.id == favorite.id){
+                return true
+            }
+            
+            return false
+            
+        })){
+            favoriteMovies.append(favorite)
+        }
+        
+        
        let favoritesData = try! JSONEncoder().encode(favoriteMovies)
         UserDefaults.standard.set(favoritesData, forKey: "favMovies")
         
