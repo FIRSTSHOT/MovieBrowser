@@ -7,25 +7,30 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireImage
 
 
-class ViewController: UIViewController {
+class ViewController: UITableViewController {
 
     var movies : [Movie] = []
+    
     var selectedMovie: Movie?
     var favoriteMovies : [Movie] = []
     var defaults = UserDefaults.standard
 
     
-    @IBOutlet weak var tableView: UITableView!
-    
-    var api = "https://api.themoviedb.org/3/discover/movie?api_key=98ddab1a678013f4f420946ce3d8b605&language=en-US&sort_by=popularity.desc&page=1"
+    var moviesApi = "/3/discover/movie?api_key=98ddab1a678013f4f420946ce3d8b605&language=en-US&sort_by=popularity.desc&page=1"
+    var genresApi = "/3/genre/movie/list?api_key=98ddab1a678013f4f420946ce3d8b605&language=en-US"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        
+    
 
-        tableView.delegate = self
-        tableView.dataSource = self
+       
         
         if let favoritesData = UserDefaults.standard.data(forKey: "favMovies")
         {
@@ -37,7 +42,6 @@ class ViewController: UIViewController {
             self.movies = data
             
             DispatchQueue.main.async {
-                self.tableView.reloadInputViews()
                 self.tableView.reloadData()
             }
             
@@ -53,14 +57,56 @@ class ViewController: UIViewController {
     
     func getMovies(completion: @escaping ([Movie]) -> Void) {
         
-        NetworkService.getAllMovies(apiUrl: api) { (data) in
+        NetworkService.getAllMovies(apiUrl: moviesApi) { (data) in
             
             guard let movies = data else {
                 return
             }
-            completion(movies)
+            
+            
+            NetworkService.getAllMovieGenres(apiUrl: self.genresApi, completion: { (data) in
+                
+                
+                
+                
+                guard let genres = data else {
+                    return
+                }
+                
+                for movie in movies {
+                    
+                    if let movieGenreIds = movie.genre_ids {
+                        
+                         movie.genre = []
+                        
+                        for genreId in movieGenreIds {
+  
+                            genres.contains(where: { (genre) -> Bool in
+                                if(genre.id == genreId)
+                                {
+                                    movie.genre?.append(genre)
+                                    return true
+                                }
+                                return false
+                            })
+                            
+                        }
+                    }
+                    
+                    
+                }
+                
+                completion(movies)
+                
+               
+                
+            })
+            
+            
+
         }
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MovieDetailViewController {
@@ -76,7 +122,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController : UITableViewDelegate,UITableViewDataSource,MovieDetailViewControllerDelegate {
+extension ViewController : MovieDetailViewControllerDelegate {
     
     
     func selectedFavoriteMovie(favorite: Movie) {
@@ -100,69 +146,70 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource,MovieDetail
     }
     
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        switch indexPath.section {
-        case 0:
-            if let title = movies[indexPath.row].title {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! MovieTableViewCell
+
+
+        if let title = movies[indexPath.row].title,let votes = movies[indexPath.row].vote_average,let imageUrl = movies[indexPath.row].poster_path , let genres = movies[indexPath.row].genre,let id = movies[indexPath.row].id{
+            cell.movieTitleLabel.text = title
+            cell.votesLabel.text = votes.toString
+            cell.posterImagePath = imageUrl
+            cell.moviePosterImageView.layer.cornerRadius = 10.0
+            cell.moviePosterImageView.clipsToBounds = true
+            cell.movieTypeAndLengthLabel.adjustsFontSizeToFitWidth = true
+             cell.movieTypeAndLengthLabel.text = ""
+            
+            NetworkService.getMoviePoster(posterUrl: imageUrl, completion: { (image) in
+                cell.moviePosterImageView.image = image
+            })
+            
+            for i in 0..<3 {
                 
-                cell.textLabel?.text = title
+                if(genres.count > i){
+                    
+                    if let cellText = cell.movieTypeAndLengthLabel.text , let name = genres[i].name {
+                        if(i == 0) {cell.movieTypeAndLengthLabel.text = cellText     + name}
+                        else {cell.movieTypeAndLengthLabel.text = cellText + " | " + name}
+                    }
+                }
+               
+
             }
-            break
-        case 1:
             
-            if let title = favoriteMovies[indexPath.row].title {
-                
-                cell.textLabel?.text = title
-            }
-            break
-            
-        default: break
-            
+            NetworkService.getMovieById(movieId: id, completion: { (movie) in
+                if let cellText = cell.movieTypeAndLengthLabel.text  {
+                    
+                    let (h,m) = self.minutesToHours(minutes: (movie?.runtime)!)
+                    
+                    cell.movieTypeAndLengthLabel.text = cellText + " - " + h.toString + "h " + m.toString + "m"
+                    
+                    
+                    
+                    
+                }
+            })
+
         }
-        
         return cell
         
     }
     
     
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        
-        switch section {
-        case 0:
-        
-            return (self.movies.count)
-        case 1:
-            return (self.favoriteMovies.count)
-        default:
-            return 0
-        }
-        
-        
+        return movies.count
         
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0 :
-            return "Movies"
-        case 1 :
-            return "Favorites"
-        default:
-            return ""
-        }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     
         selectedMovie = movies[indexPath.row]
@@ -170,5 +217,27 @@ extension ViewController : UITableViewDelegate,UITableViewDataSource,MovieDetail
         
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 163
+    }
+    
+    func minutesToHours (minutes : Int) -> (Int, Int) {
+        return (minutes / 60, minutes % 60)
+    }
+    
 }
 
+
+
+extension Int{
+    
+    var toString : String {
+        return String(self)
+    }
+}
+extension Double{
+    
+    var toString : String {
+        return String(self)
+    }
+}
