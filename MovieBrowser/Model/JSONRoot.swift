@@ -8,8 +8,14 @@
 
 import UIKit
 
-class JSONRoot: Codable {
+class MoviesJSONRoot: Codable {
     
     let results : [Movie]?
 
+}
+
+class GenresJSONRoot: Codable {
+    
+    let genres : [MovieGenre]?
+    
 }

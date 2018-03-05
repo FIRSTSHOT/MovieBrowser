@@ -23,6 +23,14 @@ class Movie: Codable {
     var original_language:String?
     var video:Bool?
     var isFavorite:Bool?
-    
+    var genre_ids:[Int]?
+    var runtime:Int?
+    var genre:[MovieGenre]?
     
 }
+
+class MovieGenre : Codable {
+    var id:Int?
+    var name:String?
+}
+
