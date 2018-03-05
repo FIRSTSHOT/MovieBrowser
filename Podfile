@@ -6,6 +6,7 @@ target 'MovieBrowser' do
   use_frameworks!
 
   # Pods for MovieBrowser
-	pod 'SwiftyJSON'
+	pod 'Alamofire', '~> 4.6'
+    pod 'AlamofireImage', '~> 3.3'
 
 end
