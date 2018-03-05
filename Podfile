@@ -8,5 +8,6 @@ target 'MovieBrowser' do
   # Pods for MovieBrowser
 	pod 'Alamofire', '~> 4.6'
     pod 'AlamofireImage', '~> 3.3'
+    
 
 end
