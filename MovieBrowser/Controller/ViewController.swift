@@ -159,7 +159,6 @@ class ViewController: UITableViewController {
             
             do {
                 
-                print(fileURL.path)
                 
                 let favMoviesJson = try String(contentsOf: fileURL, encoding: .utf8)
                 
