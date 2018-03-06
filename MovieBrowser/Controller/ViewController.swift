@@ -35,14 +35,12 @@ class ViewController: UITableViewController {
         
         
         getMovies()
+        setFavoritesFromFileSystem()
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-       super.viewDidAppear(true)
-        
-        // get stored favorite movies from file
-        
+    func setFavoritesFromFileSystem()
+    {
         let fileName = "favs.json"
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             
@@ -58,23 +56,24 @@ class ViewController: UITableViewController {
                         favoriteMovies = try JSONDecoder().decode([Movie].self, from: favoritesData)
                         if !movies.isEmpty {
                             
-                            for var m in self.movies {
-                                
-                                m.isFavorite = false
+                            
+                            for i in 0..<self.movies.count {
+                                movies[i].setIsFavorite(value: false)
                                 
                                 for var f in self.favoriteMovies {
-                                    if(f.id == m.id)
+                                    if(f.id == movies[i].id)
                                     {
-                                        m.isFavorite = f.isFavorite
-                                        break
+                                        if let isFavorite = f.isFavorite {
+                                            movies[i].setIsFavorite(value: isFavorite)
+                                            break
+                                        }
+                                        
                                     }
                                 }
-                                
                             }
                             
                         }
-                        
-                        
+
                     }
                     
                     
@@ -88,6 +87,14 @@ class ViewController: UITableViewController {
             
             
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+       super.viewDidAppear(true)
+        
+       setFavoritesFromFileSystem()
+        
+        
         
     }
     
@@ -106,13 +113,7 @@ class ViewController: UITableViewController {
         cell.moviePosterImageView.clipsToBounds = true
         cell.movieTypeAndLengthLabel.adjustsFontSizeToFitWidth = true
         cell.movieTypeAndLengthLabel.text = ""
-        
-        
-        
-        
-       
-       
-        
+
         if  let id = movies[indexPath.row].id, let votes = movies[indexPath.row].vote_average,let title = movies[indexPath.row].title,let imageUrl = movies[indexPath.row].poster_path ,  let genres = movies[indexPath.row].genre{
             
             cell.votesLabel.text = votes.toString
