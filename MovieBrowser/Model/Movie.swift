@@ -12,8 +12,7 @@ import UIKit
 struct Movie: Codable,Equatable {
     
     static func ==(lhs: Movie, rhs: Movie) -> Bool {
-        if (lhs.id == rhs.id) { return true}
-        return false
+        return lhs.id == rhs.id
     }
     
     
@@ -49,8 +48,7 @@ struct Movie: Codable,Equatable {
 
 struct MovieGenre : Codable,Equatable {
     static func ==(lhs: MovieGenre, rhs: MovieGenre) -> Bool {
-        if (lhs.id == rhs.id) { return true}
-        return false
+         return lhs.id == rhs.id 
     }
     
     var id:Int?
