@@ -8,7 +8,12 @@
 
 import UIKit
 
-class Movie: Codable {
+class Movie: Codable,Equatable {
+    static func ==(lhs: Movie, rhs: Movie) -> Bool {
+        if (lhs.id == rhs.id) { return true}
+        return false
+    }
+    
     
     var id:Int?
     var title:String?
@@ -26,10 +31,16 @@ class Movie: Codable {
     var genre_ids:[Int]?
     var runtime:Int?
     var genre:[MovieGenre]?
+    var genreAndDuration:String?
     
 }
 
-class MovieGenre : Codable {
+class MovieGenre : Codable,Equatable {
+    static func ==(lhs: MovieGenre, rhs: MovieGenre) -> Bool {
+        if (lhs.id == rhs.id) { return true}
+        return false
+    }
+    
     var id:Int?
     var name:String?
 }
