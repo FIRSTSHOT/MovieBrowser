@@ -26,7 +26,7 @@ class ViewController: UITableViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-       super.viewDidAppear(true)
+       super.viewDidAppear(animated)
        setFavoritesFromFileSystem()
         
     }
