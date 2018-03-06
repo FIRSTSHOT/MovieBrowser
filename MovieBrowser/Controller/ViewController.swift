@@ -17,7 +17,6 @@ class ViewController: UITableViewController {
     
     var selectedMovie: Movie?
     var favoriteMovies : [Movie] = []
-    var favoriteMoviesIds : [Int] = []
     var defaults = UserDefaults.standard
  
 
@@ -30,61 +29,12 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // get stored favorite movies from file
-
-//        let fileName = "favs.json"
-//        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-//
-//            let fileURL = dir.appendingPathComponent(fileName)
-//
-//
-//            do {
-//                let favMoviesJson = try String(contentsOf: fileURL, encoding: .utf8)
-//
-//
-//                do{
-//                    if let favoritesData = favMoviesJson.data(using: .utf8) {
-//                        favoriteMovies = try JSONDecoder().decode([Movie].self, from: favoritesData)
-//
-//                    }
-//
-//
-//                } catch
-//                {
-//                    print("cant decode from json file")
-//                }
-//
-//            }
-//            catch { print("cant find file")}
-//
-//
-//        }
         
         
         
         
         
-        getMovies { (data) in
-            
-            self.movies = data
-
-//            for m in self.movies {
-//
-//                for f in self.favoriteMovies {
-//                    if(f.id == m.id)
-//                    {
-//                        m.isFavorite = f.isFavorite
-//                        break
-//                    }
-//                }
-//
-//            }
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-            
-        }
+        getMovies()
         
     }
     
@@ -108,11 +58,11 @@ class ViewController: UITableViewController {
                         favoriteMovies = try JSONDecoder().decode([Movie].self, from: favoritesData)
                         if !movies.isEmpty {
                             
-                            for m in self.movies {
+                            for var m in self.movies {
                                 
                                 m.isFavorite = false
                                 
-                                for f in self.favoriteMovies {
+                                for var f in self.favoriteMovies {
                                     if(f.id == m.id)
                                     {
                                         m.isFavorite = f.isFavorite
@@ -151,24 +101,35 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! MovieTableViewCell
         
         
-        if let title = movies[indexPath.row].title,let votes = movies[indexPath.row].vote_average,let imageUrl = movies[indexPath.row].poster_path , let genres = movies[indexPath.row].genre,let id = movies[indexPath.row].id{
-            cell.movieTitleLabel.text = title
+        
+        cell.moviePosterImageView.layer.cornerRadius = 10.0
+        cell.moviePosterImageView.clipsToBounds = true
+        cell.movieTypeAndLengthLabel.adjustsFontSizeToFitWidth = true
+        cell.movieTypeAndLengthLabel.text = ""
+        
+        
+        
+        
+       
+       
+        
+        if  let id = movies[indexPath.row].id, let votes = movies[indexPath.row].vote_average,let title = movies[indexPath.row].title,let imageUrl = movies[indexPath.row].poster_path ,  let genres = movies[indexPath.row].genre{
+            
             cell.votesLabel.text = votes.toString
+            cell.movieTitleLabel.text = title
             cell.posterImagePath = imageUrl
-            cell.moviePosterImageView.layer.cornerRadius = 10.0
-            cell.moviePosterImageView.clipsToBounds = true
-            cell.movieTypeAndLengthLabel.adjustsFontSizeToFitWidth = true
-            cell.movieTypeAndLengthLabel.text = ""
             
             NetworkService.getMoviePoster(posterUrl: imageUrl, completion: { (image) in
                 cell.moviePosterImageView.image = image
             })
             
+            
+            
             for i in 0..<3 {
                 
                 if(genres.count > i){
-                    
-                    if let cellText = cell.movieTypeAndLengthLabel.text , let name = genres[i].name {
+
+                    if let cellText = cell.movieTypeAndLengthLabel.text,let name = genres[i].name {
                         if(i == 0) {cell.movieTypeAndLengthLabel.text = cellText     + name}
                         else {cell.movieTypeAndLengthLabel.text = cellText + " | " + name}
                     }
@@ -184,15 +145,21 @@ class ViewController: UITableViewController {
                     
                     cell.movieTypeAndLengthLabel.text = cellText + " - " + h.toString + "h " + m.toString + "m"
                     
-                    self.movies[indexPath.row].genreAndDuration = cell.movieTypeAndLengthLabel.text
                     
                     
-                    
+                    if let cellText = cell.movieTypeAndLengthLabel.text {
+                        self.movies[indexPath.row].genreAndDuration = cellText
+                    }
                     
                 }
             })
-            
         }
+        
+        
+        
+        
+            
+        
         return cell
         
     }
@@ -223,62 +190,25 @@ class ViewController: UITableViewController {
     
     
     
-    func getMovies(completion: @escaping ([Movie]) -> Void) {
+    func getMovies() {
         
         NetworkService.getAllMovies(apiUrl: moviesApi) { (data) in
             
             guard let movies = data else {
+                
+                
                 return
             }
             
-            
-            NetworkService.getAllMovieGenres(apiUrl: self.genresApi, completion: { (data) in
-                guard let genres = data else {
-                    return
-                }
-                
-                for movie in movies {
-                    
-                    if let id = movie.id {
-                        if(self.favoriteMoviesIds.contains(id))
-                        {
-                            movie.isFavorite = true
-                        }
-                    }
-
-                    if let movieGenreIds = movie.genre_ids {
-                        
-                         movie.genre = []
-                        
-                        for genreId in movieGenreIds {
-  
-                            genres.contains(where: { (genre) -> Bool in
-                                if(genre.id == genreId)
-                                {
-                                    movie.genre?.append(genre)
-                                    return true
-                                }
-                                return false
-                            })
-                            
-                        }
-                    }
-                    
-                    
-                }
-                
-                completion(movies)
-            })
-            
-            
+            self.movies = movies
+           
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
 
         }
     }
-    
-    
-    
-    
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? MovieDetailViewController {
             
@@ -301,7 +231,7 @@ extension ViewController : MovieDetailViewControllerDelegate {
     
     
     func removedFavoriteMovie(favorite: Movie) {
-        for movie in movies {
+        for var movie in movies {
 
             if( movie.id == favorite.id)
             {
@@ -339,7 +269,7 @@ extension ViewController : MovieDetailViewControllerDelegate {
     
     func selectedFavoriteMovie(favorite: Movie) {
         
-        for movie in movies {
+        for var movie in movies {
             
             
             if( movie.id == favorite.id)

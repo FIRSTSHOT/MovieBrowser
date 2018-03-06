@@ -55,24 +55,20 @@ class FavoriteMoviesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "fav_cell", for: indexPath) as! FavoriteMovieTableViewCell
         
+        
+        
         cell.movieTitleLabel.text = favoriteMovies[indexPath.row].title
-        
-        
         cell.votesLabel.text = favoriteMovies[indexPath.row].vote_average?.toString
         cell.moviePosterImageView.layer.cornerRadius = 10.0
         cell.moviePosterImageView.clipsToBounds = true
         cell.movieTypeAndLengthLabel.adjustsFontSizeToFitWidth = true
         cell.movieTypeAndLengthLabel.text = ""
-        
-        if let imageUrl = favoriteMovies[indexPath.row].poster_path, let genreAndDuration = favoriteMovies[indexPath.row].genreAndDuration {
-            cell.movieTypeAndLengthLabel.text = genreAndDuration
-            NetworkService.getMoviePoster(posterUrl: imageUrl, completion: { (image) in
-                cell.moviePosterImageView.image = image
-            })
-        }
-        
-        
-        
+        cell.movieTypeAndLengthLabel.text = favoriteMovies[indexPath.row].genreAndDuration
+
+        NetworkService.getMoviePoster(posterUrl: favoriteMovies[indexPath.row].poster_path!, completion: { (image) in
+            cell.moviePosterImageView.image = image
+        })
+
         
         return cell
         
@@ -120,7 +116,7 @@ extension FavoriteMoviesTableViewController : MovieDetailViewControllerDelegate 
     func removedFavoriteMovie(favorite: Movie) {
         
         
-        for movie in favoriteMovies {
+        for var movie in favoriteMovies {
             
             if( movie.id == favorite.id)
             {

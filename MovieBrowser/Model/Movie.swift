@@ -8,7 +8,9 @@
 
 import UIKit
 
-class Movie: Codable,Equatable {
+
+struct Movie: Codable,Equatable {
+    
     static func ==(lhs: Movie, rhs: Movie) -> Bool {
         if (lhs.id == rhs.id) { return true}
         return false
@@ -33,9 +35,19 @@ class Movie: Codable,Equatable {
     var genre:[MovieGenre]?
     var genreAndDuration:String?
     
+    mutating func setIsFavorite(value : Bool)
+    {
+        self.isFavorite = value
+    }
+    
+    mutating func setGenre(value: [MovieGenre])
+    {
+        genre = value
+    }
+    
 }
 
-class MovieGenre : Codable,Equatable {
+struct MovieGenre : Codable,Equatable {
     static func ==(lhs: MovieGenre, rhs: MovieGenre) -> Bool {
         if (lhs.id == rhs.id) { return true}
         return false

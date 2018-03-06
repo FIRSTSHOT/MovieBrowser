@@ -13,6 +13,7 @@ class NetworkService: NSObject {
     
     static let apiRoot = "https://api.themoviedb.org"
     static let posterApiRoot = "https://image.tmdb.org/t/p/w342"
+    static var genresApi = "/3/genre/movie/list?api_key=98ddab1a678013f4f420946ce3d8b605&language=en-US"
     
     
     static func getMovieById(movieId:Int?, completion: @escaping (Movie?)->Void)
@@ -64,19 +65,57 @@ class NetworkService: NSObject {
             if let data = response.data {
                 do{
                     
-                    let results = try JSONDecoder().decode(MoviesJSONRoot.self, from: data)
+                   var results = try JSONDecoder().decode(MoviesJSONRoot.self, from: data)
                     
-                    if let list = results.results {
+                    getAllMovieGenres(apiUrl: apiRoot+genresApi, completion: { (data) in
                         
-                        for var movie in list {
-                            movie.isFavorite = false
+                        
+                        guard let genres = data else {
+
+                            return
                         }
                         
-                        completion(list)
+                        
+                        if let list = results.results {
+                            
+                            for i in 0..<list.count {
+                                
+                                var movieGenres : [MovieGenre] = []
+                                
+                                if let idsList = list[i].genre_ids {
+                                    
+                                    for j in 0..<idsList.count
+                                    {
+
+                                        for k in 0..<genres.count {
+     
+                                            if(idsList[j] == genres[k].id )
+                                            {
+                                                movieGenres.append(genres[k])
+                                            }
+                                            
+                                        }
+                                        
+                                        
+                                    }
+                                }
+                                results.results![i].setIsFavorite(value: false)
+                                results.results![i].setGenre(value: movieGenres)
+                                
+                                
+                                
+                                
+                            }
+                            
+                            
+                        }
+                        
+                        completion(results.results)
                         return
-                    }
-                    
-                    completion(nil)
+      
+                        
+                    })
+                   
                     
                 }catch
                 {
@@ -90,20 +129,22 @@ class NetworkService: NSObject {
     
     static func getAllMovieGenres(apiUrl:String,completion : @escaping ([MovieGenre]?)-> Void)
     {
-        Alamofire.request(apiRoot + apiUrl).responseData { (response) in
+        Alamofire.request(apiRoot + genresApi).responseData { (response) in
+            
+            
             if let data = response.data {
                 do
                 {
-                let genres = try JSONDecoder().decode(GenresJSONRoot.self, from: data)
+                    let genres = try JSONDecoder().decode(GenresJSONRoot.self, from: data)
                     
-                    if let list = genres.genres{
-                        completion(list)
-                        return
-                    }
-                    completion(nil)
+                    
+                    completion(genres.genres)
+
             
                 }catch
                 {
+                    
+                    
                     completion(nil)
                     return
                 }
