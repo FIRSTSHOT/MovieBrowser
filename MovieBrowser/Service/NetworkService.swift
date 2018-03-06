@@ -67,6 +67,11 @@ class NetworkService: NSObject {
                     let results = try JSONDecoder().decode(MoviesJSONRoot.self, from: data)
                     
                     if let list = results.results {
+                        
+                        for var movie in list {
+                            movie.isFavorite = false
+                        }
+                        
                         completion(list)
                         return
                     }
