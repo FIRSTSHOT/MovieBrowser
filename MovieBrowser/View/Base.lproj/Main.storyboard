@@ -160,9 +160,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dwr-N5-0kq">
-                                <rect key="frame" x="16" y="242" width="343" height="260"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" indicatorStyle="black" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dwr-N5-0kq">
+                                <rect key="frame" x="16" y="242" width="343" height="237"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -219,7 +219,7 @@
                             <constraint firstItem="lGe-8F-cJY" firstAttribute="top" secondItem="KFm-Gl-WbN" secondAttribute="top" constant="64" id="Kkl-IZ-zw1"/>
                             <constraint firstItem="FFh-BC-NqT" firstAttribute="trailing" secondItem="D7x-QE-eIe" secondAttribute="trailing" constant="1" id="KnH-it-JIl"/>
                             <constraint firstItem="Dwr-N5-0kq" firstAttribute="trailing" secondItem="Pbi-ca-aiu" secondAttribute="trailing" id="MPY-zq-NU4"/>
-                            <constraint firstItem="Pbi-ca-aiu" firstAttribute="top" secondItem="Dwr-N5-0kq" secondAttribute="bottom" constant="-15" id="Mj9-wQ-baF"/>
+                            <constraint firstItem="Pbi-ca-aiu" firstAttribute="top" secondItem="Dwr-N5-0kq" secondAttribute="bottom" constant="8" id="Mj9-wQ-baF"/>
                             <constraint firstItem="zbo-ha-VPI" firstAttribute="leading" secondItem="9cV-hl-HOw" secondAttribute="leadingMargin" id="WIS-U2-kq3"/>
                             <constraint firstItem="zbo-ha-VPI" firstAttribute="top" secondItem="KFm-Gl-WbN" secondAttribute="top" constant="30" id="Yd5-hX-fly"/>
                             <constraint firstItem="Dwr-N5-0kq" firstAttribute="top" secondItem="zbo-ha-VPI" secondAttribute="bottom" constant="31" id="ZA8-sm-9eh"/>
@@ -248,7 +248,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YqA-tT-ZWk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="213.59999999999999" y="131.78410794602701"/>
+            <point key="canvasLocation" x="217" y="133"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="vRl-dO-dbg">
@@ -260,6 +260,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        </textAttributes>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
                                 <real key="value" value="1"/>
@@ -406,7 +412,7 @@
                             <outlet property="delegate" destination="xBm-gT-mhx" id="9jo-ZN-IDU"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" systemItem="recents" id="DPq-Ev-cyq"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="ticket" id="DPq-Ev-cyq"/>
                     <navigationItem key="navigationItem" title="Movie Browser" id="Y0r-lW-jDg">
                         <barButtonItem key="backBarButtonItem" title=" " id="l0l-kv-dHK"/>
                     </navigationItem>
@@ -419,7 +425,10 @@
             <point key="canvasLocation" x="-626.39999999999998" y="132.68365817091455"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ticket" width="25" height="25"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fI1-ge-8eH"/>
+        <segue reference="Cjs-kB-nSt"/>
     </inferredMetricsTieBreakers>
 </document>

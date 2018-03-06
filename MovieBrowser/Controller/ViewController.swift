@@ -39,62 +39,12 @@ class ViewController: UITableViewController {
         
     }
     
-    func setFavoritesFromFileSystem()
-    {
-        let fileName = "favs.json"
-        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            
-            let fileURL = dir.appendingPathComponent(fileName)
-            
-            
-            do {
-                let favMoviesJson = try String(contentsOf: fileURL, encoding: .utf8)
-                
-                
-                do{
-                    if let favoritesData = favMoviesJson.data(using: .utf8) {
-                        favoriteMovies = try JSONDecoder().decode([Movie].self, from: favoritesData)
-                        if !movies.isEmpty {
-                            
-                            
-                            for i in 0..<self.movies.count {
-                                movies[i].setIsFavorite(value: false)
-                                
-                                for var f in self.favoriteMovies {
-                                    if(f.id == movies[i].id)
-                                    {
-                                        if let isFavorite = f.isFavorite {
-                                            movies[i].setIsFavorite(value: isFavorite)
-                                            break
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                            
-                        }
-
-                    }
-                    
-                    
-                } catch
-                {
-                    print("cant decode from json file")
-                }
-                
-            }
-            catch { print("cant find file")}
-            
-            
-        }
-    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
        super.viewDidAppear(true)
         
        setFavoritesFromFileSystem()
-        
-        
         
     }
     
@@ -106,9 +56,7 @@ class ViewController: UITableViewController {
         
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! MovieTableViewCell
-        
-        
-        
+
         cell.moviePosterImageView.layer.cornerRadius = 10.0
         cell.moviePosterImageView.clipsToBounds = true
         cell.movieTypeAndLengthLabel.adjustsFontSizeToFitWidth = true
@@ -189,6 +137,71 @@ class ViewController: UITableViewController {
         return 163
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? MovieDetailViewController {
+            
+            
+            destination.delegate = self
+            destination.selectedMovie = selectedMovie
+            
+            
+        }
+    }
+    
+    
+    func setFavoritesFromFileSystem()
+    {
+        let fileName = "favs.json"
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            
+            let fileURL = dir.appendingPathComponent(fileName)
+            
+            
+            do {
+                
+                print(fileURL.path)
+                
+                let favMoviesJson = try String(contentsOf: fileURL, encoding: .utf8)
+                
+                
+                do{
+                    if let favoritesData = favMoviesJson.data(using: .utf8) {
+                        favoriteMovies = try JSONDecoder().decode([Movie].self, from: favoritesData)
+                        if !movies.isEmpty {
+                            
+                            
+                            for i in 0..<self.movies.count {
+                                movies[i].setIsFavorite(value: false)
+                                
+                                for var f in self.favoriteMovies {
+                                    if(f.id == movies[i].id)
+                                    {
+                                        if let isFavorite = f.isFavorite {
+                                            movies[i].setIsFavorite(value: isFavorite)
+                                            break
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    
+                } catch
+                {
+                    print("can't decode from json file")
+                }
+                
+            }
+            catch { print("can't find file")}
+            
+            
+        }
+    }
+    
     
     
     func getMovies() {
@@ -210,16 +223,6 @@ class ViewController: UITableViewController {
         }
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? MovieDetailViewController {
-            
-    
-            destination.delegate = self
-            destination.selectedMovie = selectedMovie
-            
-            
-        }
-    }
     
     func minutesToHours (minutes : Int) -> (Int, Int) {
         return (minutes / 60, minutes % 60)

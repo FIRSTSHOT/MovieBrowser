@@ -18,28 +18,32 @@ class NetworkService: NSObject {
     
     static func getMovieById(movieId:Int?, completion: @escaping (Movie?)->Void)
     {
-        Alamofire.request(apiRoot+"/3/movie/"+(movieId?.toString)!+"?api_key=98ddab1a678013f4f420946ce3d8b605&language=en-US").responseData { (response) in
-            if let data = response.data {
-                do{
-                    
-                    let results = try JSONDecoder().decode(Movie.self, from: data)
-                    
-                    let movie : Movie? = results
-                    if movie != nil {
-                        completion(movie)
-                        return
+        
+        if let id = movieId {
+            Alamofire.request(apiRoot+"/3/movie/"+id.toString+"?api_key=98ddab1a678013f4f420946ce3d8b605&language=en-US").responseData { (response) in
+                if let data = response.data {
+                    do{
+                        
+                        let results = try JSONDecoder().decode(Movie.self, from: data)
+                        
+                        let movie : Movie? = results
+                        if movie != nil {
+                            completion(movie)
+                            return
                         }
-                    
-                    
-                    completion(nil)
-                    
-                }catch
-                {
-                    completion(nil)
-                    return
+                        
+                        
+                        completion(nil)
+                        
+                    }catch
+                    {
+                        completion(nil)
+                        return
+                    }
                 }
             }
         }
+       
     }
     
     
@@ -72,10 +76,11 @@ class NetworkService: NSObject {
                         
                         guard let genres = data else {
 
+                             completion(nil)
                             return
                         }
                         
-                        
+                        // set genre for each movie
                         if let list = results.results {
                             
                             for i in 0..<list.count {
@@ -99,12 +104,11 @@ class NetworkService: NSObject {
                                         
                                     }
                                 }
+                                
+                                
                                 results.results![i].setIsFavorite(value: false)
                                 results.results![i].setGenre(value: movieGenres)
-                                
-                                
-                                
-                                
+
                             }
                             
                             
@@ -131,116 +135,19 @@ class NetworkService: NSObject {
     {
         Alamofire.request(apiRoot + genresApi).responseData { (response) in
             
-            
             if let data = response.data {
                 do
                 {
                     let genres = try JSONDecoder().decode(GenresJSONRoot.self, from: data)
-                    
-                    
                     completion(genres.genres)
 
             
                 }catch
                 {
-                    
-                    
                     completion(nil)
                     return
                 }
             }
         }
     }
-    
-//    static func getAllMovies(apiUrl:String,completion : @escaping ([Movie]?) -> Void)
-//    {
-//
-//        guard let url = URL(string: apiRoot + apiUrl) else {
-//             print("Error: cannot create URL")
-//            completion(nil)
-//            return
-//        }
-//
-//        let urlRequest = URLRequest(url: url)
-//        let session = URLSession.shared
-//        let task = session.dataTask(with: urlRequest) { (data, response, error) in
-//
-//            guard error == nil else {
-//                completion(nil)
-//                return
-//            }
-//
-//            guard let responseData = data else
-//            {
-//                completion(nil)
-//                return
-//            }
-//
-//            do{
-//
-//                 let results = try JSONDecoder().decode(JSONRoot.self, from: responseData)
-//
-//                if let list = results.results {
-//                    completion(list)
-//                    return
-//                }
-//
-//                completion(nil)
-//
-//            }catch
-//            {
-//                completion(nil)
-//                return
-//            }
-//
-//        }
-//
-//        task.resume()
-//
-//    }
-    
-    //    static func getMoviePoster(posterUrl:String, completion : @escaping (UIImage?)->Void)
-    //    {
-    //        guard let url = URL(string: "https://www.joblo.com/posters/images/full/loganimaxposter.jpg") else {
-    //            print("Error: cannot create URL")
-    //            completion(nil)
-    //            return
-    //        }
-    //
-    //        print(url)
-    //
-    //        let urlRequest = URLRequest(url: url)
-    //        let session = URLSession.shared
-    //
-    //        let task = session.dataTask(with: urlRequest) { (data, response, error) in
-    //            guard error == nil else {
-    //                completion(nil)
-    //                return
-    //            }
-    //
-    //            guard let responseData = data else
-    //            {
-    //                completion(nil)
-    //                return
-    //            }
-    //
-    //            do{
-    //                let downloadedImage = UIImage(data: responseData)
-    //                completion(downloadedImage)
-    //
-    //            }catch
-    //            {
-    //                completion(nil)
-    //
-    //            }
-    //
-    //
-    //        }
-    //
-    //        task.resume()
-    //
-    //    }
-    //
-
-
 }
