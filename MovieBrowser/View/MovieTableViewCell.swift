@@ -15,19 +15,13 @@ class MovieTableViewCell: UITableViewCell {
     @IBOutlet weak var votesLabel: UILabel!
     @IBOutlet weak var movieTypeAndLengthLabel: UILabel!
     var posterImagePath:String?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
- 
-    }
+     }
     
-
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
-    
-        
-        
 }
 
