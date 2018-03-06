@@ -21,7 +21,7 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var genreAndDurationLabel: UILabel!
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var releaseDateLabel: UILabel!
-    var selectedMovie:Movie?
+    var selectedMovie: Movie?
     var delegate : MovieDetailViewControllerDelegate?
     
     override func viewDidLayoutSubviews() {

@@ -12,9 +12,9 @@ import AlamofireImage
 
 class ViewController: UITableViewController {
 
-    var movies : [Movie] = []
+    var movies: [Movie] = []
     var selectedMovie: Movie?
-    var favoriteMovies : [Movie] = []
+    var favoriteMovies: [Movie] = []
     var defaults = UserDefaults.standard
     var moviesApi = "/3/discover/movie?api_key=98ddab1a678013f4f420946ce3d8b605&language=en-US&sort_by=popularity.desc&page=1"
     var genresApi = "/3/genre/movie/list?api_key=98ddab1a678013f4f420946ce3d8b605&language=en-US"
@@ -37,7 +37,8 @@ class ViewController: UITableViewController {
         cell.moviePosterImageView.clipsToBounds = true
         cell.movieTypeAndLengthLabel.adjustsFontSizeToFitWidth = true
         cell.movieTypeAndLengthLabel.text = ""
-        if  let id = movies[indexPath.row].id, let votes = movies[indexPath.row].voteAverage,let title = movies[indexPath.row].title,let imageUrl = movies[indexPath.row].posterPath ,  let genres = movies[indexPath.row].genre{
+        let movie = movies[indexPath.row]
+        if  let id = movie.id, let votes = movie.voteAverage,let title = movie.title,let imageUrl = movie.posterPath ,  let genres = movie.genre{
             cell.votesLabel.text = votes.toString
             cell.movieTitleLabel.text = title
             cell.posterImagePath = imageUrl
@@ -138,38 +139,20 @@ class ViewController: UITableViewController {
 extension ViewController : MovieDetailViewControllerDelegate {
     
     func removedFavoriteMovie(favorite: Movie) {
-        if let deletedMovie = movies.first(where: { $0 == favorite}) {
-            if let index = favoriteMovies.index(of: deletedMovie){
-                favoriteMovies.remove(at: index)
-                writeFavoritesToFile()
-            }
+        if let index = movies.index(where: { $0 == favorite}) {
+            favoriteMovies.remove(at: index)
+            writeFavoritesToFile(movies: favoriteMovies)
         }
     }
     
     func selectedFavoriteMovie(favorite: Movie) {
-        if let favoriteMovie = movies.first(where: { $0 == favorite}) {
-            if let index = movies.index(of: favoriteMovie){
-                movies[index].setIsFavorite(value: true)
-                favoriteMovies.append(movies[index])
-                writeFavoritesToFile()
-            }
+         if let index = movies.index(where: { $0 == favorite}) {
+            movies[index].setIsFavorite(value: true)
+            favoriteMovies.append(movies[index])
+            writeFavoritesToFile(movies: favoriteMovies)
         }
     }
-    func writeFavoritesToFile()
-    {
-        do {
-            let favoritesData = try JSONEncoder().encode(favoriteMovies)
-            let fileName = "favs.json"
-            if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                let fileURL = dir.appendingPathComponent(fileName)
-                do {
-                    try favoritesData.write(to: fileURL, options: .atomic)
-                }
-                catch {print("can't find file")}
-            }
-        }catch{print("can't encode data to file")}
-        
-    }
+    
 }
 
 extension Int{
@@ -183,4 +166,24 @@ extension Double{
     var toString : String {
         return String(self)
     }
+}
+
+extension UIViewController {
+    
+    func writeFavoritesToFile(movies: [Movie])
+    {
+        do {
+            let favoritesData = try JSONEncoder().encode(movies)
+            let fileName = "favs.json"
+            if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                let fileURL = dir.appendingPathComponent(fileName)
+                do {
+                    try favoritesData.write(to: fileURL, options: .atomic)
+                }
+                catch {print("can't find file")}
+            }
+        }catch{print("can't encode data to file")}
+        
+    }
+    
 }

@@ -12,7 +12,7 @@ import AlamofireImage
 
 class FavoriteMoviesTableViewController: UITableViewController {
 
-    var favoriteMovies : [Movie] = []
+    var favoriteMovies: [Movie] = []
     var selectedMovie: Movie?
     
     override func viewDidLoad() {
@@ -86,33 +86,15 @@ class FavoriteMoviesTableViewController: UITableViewController {
 extension FavoriteMoviesTableViewController : MovieDetailViewControllerDelegate {
     func selectedFavoriteMovie(favorite: Movie) {
         favoriteMovies.append(favorite)
-         writeFavoritesToFile()
+        writeFavoritesToFile(movies: favoriteMovies)
     }
     func removedFavoriteMovie(favorite: Movie) {
-        if let deletedMovie = favoriteMovies.first(where: { $0 == favorite}) {
-            if let index = favoriteMovies.index(of: deletedMovie){
-                favoriteMovies[index].setIsFavorite(value: false)
-                favoriteMovies.remove(at: index)
-                writeFavoritesToFile()
-            }
+         if let index = favoriteMovies.index(where: { $0 == favorite}) {
+            favoriteMovies[index].setIsFavorite(value: false)
+            favoriteMovies.remove(at: index)
+            writeFavoritesToFile(movies: favoriteMovies)
         }
     }
-    func writeFavoritesToFile()
-    {
-        do {
-            let favoritesData = try JSONEncoder().encode(favoriteMovies)
-            let fileName = "favs.json"
-            if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                let fileURL = dir.appendingPathComponent(fileName)
-                do {
-                    try favoritesData.write(to: fileURL, options: .atomic)
-                }
-                catch {print("can't find file")}
-            }
-        }catch{print("can't encode data to file")}
-        
-    }
- 
 }
 
 
