@@ -22,7 +22,7 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var releaseDateLabel: UILabel!
     var selectedMovie: Movie?
-    var delegate : MovieDetailViewControllerDelegate?
+    var delegate: MovieDetailViewControllerDelegate?
     
     override func viewDidLayoutSubviews() {
         overviewTextView.setContentOffset(CGPoint.zero, animated: false)
@@ -45,7 +45,7 @@ class MovieDetailViewController: UIViewController {
             guard let date = dateFormatter.date(from: releaseDate) else {return}
             if(isFavorite)
             {
-                navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "star_filled"), style: .plain, target: self, action: #selector(removeFromFavorite))
+                navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "starFilled"), style: .plain, target: self, action: #selector(removeFromFavorite))
             }
             releaseDateLabel.text  = date.toCustomFormat()
             NetworkService.getMoviePoster(posterUrl: posterUrl, completion: { (poster) in
@@ -67,7 +67,7 @@ class MovieDetailViewController: UIViewController {
     @objc func addToFavorites()
     {
         if var movie = selectedMovie {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "star_filled"), style: .plain, target: self, action: #selector(removeFromFavorite))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "starFilled"), style: .plain, target: self, action: #selector(removeFromFavorite))
             movie.setIsFavorite(value: true)
             delegate?.selectedFavoriteMovie(favorite: movie)
         }
