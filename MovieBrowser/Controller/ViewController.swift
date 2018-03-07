@@ -100,16 +100,14 @@ class ViewController: UITableViewController {
                         favoriteMovies = try JSONDecoder().decode([Movie].self, from: favoritesData)
                         if !movies.isEmpty {
                             for i in 0..<self.movies.count {
-                                movies[i].setIsFavorite(value: false)
-                                for f in self.favoriteMovies {
-                                    if(f.id == movies[i].id)
-                                    {
-                                        if let isFavorite = f.isFavorite {
+                                let movie = movies[i]
+                                favoriteMovies.forEach({ (fav) in
+                                    if(movie == fav){
+                                        if let isFavorite = fav.isFavorite {
                                             movies[i].setIsFavorite(value: isFavorite)
-                                            break
                                         }
                                     }
-                                }
+                                })
                             }
                         }
                     }

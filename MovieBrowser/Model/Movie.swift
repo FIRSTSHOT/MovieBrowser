@@ -22,7 +22,7 @@ struct Movie : Codable, Equatable {
     var posterPath: String?
     var originalLanguage: String?
     var video: Bool?
-    var isFavorite: Bool?
+    var isFavorite: Bool? = false
     var genreIds: [Int]?
     var runtime: Int?
     var genre: [MovieGenre]?

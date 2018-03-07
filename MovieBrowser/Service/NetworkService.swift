@@ -71,7 +71,6 @@ class NetworkService: NSObject {
                                         }
                                     }
                                 }
-                                results.results![i].setIsFavorite(value: false)
                                 results.results![i].setGenre(value: movieGenres)
                             }
                         }
